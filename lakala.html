@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+	<title>拉卡拉</title>
+	<script type="text/javascript" src="js/jquery-1.12.1.js"></script>
+	<script type="text/javascript" src="js/move.js"></script>
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+	<script type="text/javascript">
+		// function getStyle(obj, attr)  
+		// {  
+		//     if(obj.currentStyle)  
+		//     {  
+		//         return obj.currentStyle[attr];  
+		//     }  
+		//     else  
+		//     {  
+		//         return getComputedStyle(obj,false)[attr];  
+		//     }  
+		// }  
+		
+		$(function(){
+			$('#service>a').mouseover(function(){
+				$(this).css('color','#00AFEC');
+				$('.dropdown').css('display','block');
+			}).mouseout(function(){
+				$(this).css('color','#DCDCDC');
+				$('.dropdown').css('display','none');
+			}).click(function(){
+				$(this).css('color','#DCDCDC');
+				$(this).css('text-decoration','none');
+			})
+			$('.dropdown').mouseover(function(){
+				$('#service>a').css('color','#00AFEC');
+				$('.dropdown').css('display','block');
+			}).mouseout(function(){
+				$('#service>a').css('color','#DCDCDC');
+				$('.dropdown').css('display','none');
+			});
+			$('.dropdown>li>a').click(function(){
+				$(this).css('color','#000');
+				$(this).css('text-decoration','none');
+			});
+			for (var i = 0; i < $('#ub li a').length; i++) {
+				var index;
+				$($('#ub li a')[i]).mouseover(function(){
+					$(this).css('background-color','#fff');
+					$(this).css('color','#00AFEC');
+					$(this).find('#pay').css('background',"url('./img/5.png')");
+					$(this).find('#credit').css('background',"url('./img/6.png')");
+					$(this).find('#letter').css('background',"url('./img/7.png')");
+					$(this).find('#cross').css('background',"url('./img/8.png')");
+					// console.log(index);
+					// var lpic = getStyle($(this).find('img')[0],'src');
+					// $(this).children(':first').css('src',"img/"++".png");
+				}).mouseout(function(){
+					$(this).css('color','#000');
+					$(this).find('#pay').css('background',"url('./img/1.png')");
+					$(this).find('#credit').css('background',"url('./img/2.png')");
+					$(this).find('#letter').css('background',"url('./img/3.png')");
+					$(this).find('#cross').css('background',"url('./img/4.png')");
+				})
+			};
+
+			// var t = Math.ceil(($(window).height() - $('#fixed ul').height())/2);
+			// var top = t + $(document).scrollTop();
+			// console.log(top);
+			// Move($('#fixed'),{'top':top});
+
+			for (var i = 0; i < $('#nav .nav>li').length; i++) {
+				// var $(document.getElementsByTagName('li')).index = i;
+				// console.log(i);
+				$($('#nav .nav>li')[i]).mouseover(function(){
+					$(this).children(':first').css('background-color','#F6F6F6');
+					$(this).children(':first').css('border-bottom','2px solid #00AFEC');
+					$(this).find('dl').css('display','block');
+					$(this).find('dl').mouseover(function(){
+						$(this).css('display','block');
+						$(this).find('a').mouseover(function(){
+							$(this).css('color','#00B0EC');
+						}).mouseout(function(){
+							$(this).css('color','#000');
+						})
+					})
+				}).mouseout(function(){
+					$(this).children(':first').css('border-bottom','2px solid transparent');
+					$(this).find('dl').css('display','none');
+					$(this).find('dl').mouseover(function(){
+						$(this).css('display','none');
+					})
+				})
+			};
+
+			$('#smallPic div').click(function(){
+				var bh = parseInt($('#bigPic').css('height'));
+				var sh = parseInt($(this).parent().css('height'));
+				timer = setInterval(function(){
+					// console.log('OK');
+					sh-=0.7;
+					if(sh < 0)
+					{
+						bh+=3;
+						if(bh > 600)
+						{
+							clearInterval(timer);
+						}
+						else
+						{
+							$('#bigPic').css('height',''+bh+'px');
+						}
+					}
+					else
+					{
+						// console.log(bh);
+						$('#smallPic').css('height',''+sh+'px');
+					}
+				},0.08);
+				// $(this).parent().css('display','none');
+				// $('#bigPic').css('display','block');
+			});
+
+			$('#bigPic div').click(bP);
+			
+			setTimeout(function(){
+				bP();
+			},1500);
+
+			function bP(){
+				var bh = parseInt($('#bigPic').css('height'));
+				var sh = parseInt($('#smallPic').css('height'));
+				timer = setInterval(function(){
+					// console.log('OK');
+					bh-=3;
+					if(bh < 0)
+					{
+						sh+=0.7;
+						if(sh > 50)
+						{
+							clearInterval(timer);
+						}
+						else
+						{
+							$('#smallPic').css('height',''+sh+'px');
+						}
+					}
+					else
+					{
+						// console.log(bh);
+						$('#bigPic').css('height',''+bh+'px');
+					}
+				},0.08);
+			}
+
+			var moveLeft = true;
+			var moveTimer = null;
+			startMove(moveLeft);
+			$($('#up ul i')[0]).css('background-position','right top');
+			var width = parseInt($('#up ul:first-child img').css('width'));
+			var W = width*$('#up ul:first-child li').length;
+			$('#up ul:first-child').css('width',''+W+'px');
+			for (var i = 0; i < $('#up ul:first-child li').length; i++) {
+				$($('#up ul:first-child li')[i]).mouseover(function()
+				{
+					stopMove();
+				}).mouseout(function(){
+					startMove(moveLeft);
+				})
+			};
+			$('#up div a:first-child').click(function(){
+				// clearInterval(moveTimer);
+				goMove(true);
+				startMove(true);
+			});
+			$('#up div a:last-child').click(function(){
+				// clearInterval(moveTimer);
+				goMove(false);
+				startMove(false);
+			});
+			
+			function startMove(bLeft)
+			{
+				moveLeft = bLeft;
+				if(moveTimer)
+				{
+					clearInterval(moveTimer);
+				}
+				moveTimer = setInterval(goMove,5000);
+			}
+			// startMove(true);
+			function stopMove()
+			{
+				clearInterval(moveTimer);
+				moveTimer = null;
+			}
+			function goMove()
+			{
+				var l = parseInt($('#up ul:first-child').css('left'));
+				$('#up ul:first-child').css('left',''+l+'px');
+				if(moveLeft)
+				{
+					if(l <= -width*7)
+					{
+						l += width*7;
+					}
+					else{
+						l -= width;
+					}
+				}
+				else
+				{
+					if(l >= 0)
+					{
+						l -= width*7;
+					}
+					else{
+						l += width;
+					}
+				}
+				$('#up ul i').css('background-position','left top');
+				var j;
+				if(l == 0)
+				{
+					j = 0;
+				}
+				else
+				{
+					j = -(l / width);
+				}
+				$($('#up ul i')[j]).css('background-position','right top');
+
+				$('#up ul:first-child').css('left',''+l+'px');
+			}
+		});
+		
+	</script>
+</head>
+<body>
+	<div id="top">
+		<div id="smallPic">
+			<div class="clickOpen">点击展开</div>
+			<img src="img/20160607173218_43554.jpg" alt="">
+		</div>
+		<div id="bigPic">
+			<div class="clickOpen">点击收起</div>
+			<img src="img/20160607112610_76784.jpg" id="bp" alt="">
+		</div>
+	</div>
+	<div id="contain">
+		<div id="search" class="clr">
+			<form class="navbar-form rt" role="search">
+				<span id="service"><a href="#">服务中心</a><b>></b></span>
+
+				<ul class="dropdown">
+					<li><a href="#">商户服务</a></li>
+					<li><a href="#">用户服务</a></li>
+				</ul>
+
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search...">
+				 </div>
+			</form>
+		</div>
+		<div id="nav">
+			<a href="#">
+				<img src="img/id_07.png" alt="">
+			</a>
+
+			<ul class="nav nav-pills">
+				<li role="presentation">
+					<a href="#">关于我们</a>
+					<dl>
+						<dt></dt>
+						<dd>
+							<ul class="down">
+								<li><a href="#">商户服务</a></li>
+								<li><a href="#">用户服务</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</li>
+				<li role="presentation">
+					<a href="#">解决方案</a>
+					<dl>
+						<dt></dt>
+						<dd>
+							<ul class="down">
+								<li><a href="#">商户服务</a></li>
+								<li><a href="#">用户服务</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</li>
+				<li role="presentation">
+					<a href="#">产品中心</a>
+					<dl>
+						<dt></dt>
+						<dd>
+							<ul class="down">
+								<li><a href="#">商户服务</a></li>
+								<li><a href="#">用户服务</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</li>
+				<li role="presentation">
+					<a href="#">拉卡拉商城</a>
+					<dl></dl>
+				</li>
+				<li role="presentation">
+					<a href="#">下载中心</a>
+					<dl></dl>
+				</li>
+				<li role="presentation">
+					<a href="#">联系我们</a>
+					<dl>
+						<dt></dt>
+						<dd>
+							<ul class="down">
+								<li><a href="#">商户服务</a></li>
+								<li><a href="#">用户服务</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		<div id="middle">
+			<div id="up">
+				<!-- <div> -->
+					<ul>
+						<li><a  href="#"><img src="img/20150922154626_17201.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20151112094902_79404.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160126142342_18400.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160314181800_16995.png" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160414145536_13810.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160506111111_37437.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160517170746_75780.jpg" alt=""></a></li>
+						<li><a  href="#"><img src="img/20160523143223_66625.jpg" alt=""></a></li>
+					</ul>
+				<!-- </div> -->
+				<div><a href="javascript:void(0)"></a><a href="javascript:void(0)"></a></div>
+				<ul class="rt">
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+					<li><i></i></li>
+				</ul>
+			</div>
+			<div id="ub" class="clr">
+				<ul class="nav nav-pills lt">
+					<li role="presentation">
+						<a href="#"><i id="pay"></i></--><span>支付</span></a>
+						
+					</li>
+					
+					<li role="presentation">
+						<i></i>
+						<a href="#"><i id="credit"></i></--><span>信贷</span></a>
+					</li>
+					
+					<li role="presentation">
+						<b></b>
+						<a href="#"><i id="letter"></i></--><span>考拉征信</span></a>
+					</li>
+
+					<li role="presentation">
+						<b></b>
+						<a href="#"><i id="cross"></i></--><span>跨境支付</span></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="fixed">
+			<ul>
+				<li><a href="javascrip:void(0)">在线客服</a></li>
+				<li><a href="javascrip:void(0)">留言</a></li>
+			</ul>
+		</div>
+		<div id="foot">
+			<div id="ewm" class="rt">
+				<img src="img/20141224102433_32192.jpg" alt="">
+			</div>
+			<ul>
+				<li><span>全国客服热线：95016 （8:00-22:00）</span> 官方微博：@拉卡拉  腾讯公众微信：ilakala</li>
+				<li>©2005-2015 Lakala Payment Co., Ltd. All Rights Reserved. 京ICP备12007612号 京公网安备11010802020147号</li>
+			</ul>
+			<div id="last">
+				<a href="#">
+					<img src="img/ghs.png" alt="">
+					<span>京公网安备 11010802020147号</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
